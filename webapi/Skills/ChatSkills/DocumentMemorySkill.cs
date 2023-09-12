@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -86,7 +87,7 @@ public class DocumentMemorySkill
                     relevantMemories.Add(memory);
                 }
             }
-            catch (SKException connectorException)
+            catch (Exception connectorException)
             {
                 // A store exception might be thrown if the collection does not exist, depending on the memory store connector.
                 this._logger.LogError(connectorException, "Cannot search collection {0}", documentCollection);

@@ -12,7 +12,7 @@ export class DocumentImportService extends BaseService {
     ) => {
         const formData = new FormData();
         formData.append('chatId', chatId);
-        formData.append('documentScope', 'Chat');
+        formData.append('documentScope', 'Global');
         formData.append('useContentSafety', useContentSafety.toString());
         for (const document of documents) {
             formData.append('formFiles', document);

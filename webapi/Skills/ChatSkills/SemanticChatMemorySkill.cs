@@ -84,7 +84,7 @@ public class SemanticChatMemorySkill
                     relevantMemories.Add(memory);
                 }
             }
-            catch (SKException connectorException)
+            catch (Exception connectorException)
             {
                 // A store exception might be thrown if the collection does not exist, depending on the memory store connector.
                 this._logger.LogError(connectorException, "Cannot search collection {0}", memoryCollectionName);
