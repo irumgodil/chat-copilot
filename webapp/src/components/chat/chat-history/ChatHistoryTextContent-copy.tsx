@@ -19,9 +19,7 @@ interface ChatHistoryTextContentProps {
 
 export const ChatHistoryTextContent: React.FC<ChatHistoryTextContentProps> = ({ message }) => {
     const classes = useClasses();
-    const urlPattern = /https?:\/\/\S+/g;
-    const contentWithImageUrl = message.content.replace(urlPattern, '');
-    const content = utils.formatChatTextContent(contentWithImageUrl);
+    const content = utils.formatChatTextContent(message.content);
 
     return (
         <div className={classes.content}>

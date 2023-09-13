@@ -87,19 +87,6 @@ export const ChatHistoryItem: React.FC<ChatHistoryItemProps> = ({ message, getRe
 
     const isDefaultUser = message.userId === DefaultChatUser.id;
     const isMe = isDefaultUser || (message.authorRole === AuthorRoles.User && message.userId === activeUserInfo?.id);
-    const urlPattern = /https?:\/\/\S+/g;
-
-    // Use the RegExp.prototype.exec method to find the first URL in the text
-    const match = urlPattern.exec(message.content);
-    let imageProvided = false;
-    let imageUrl = "";
-
-    // Check if a URL was found
-    if (match){
-        imageProvided = true;
-        imageUrl = match[0];
-    } 
-    
     const isBot = message.authorRole === AuthorRoles.Bot;
     const user = isDefaultUser
         ? DefaultChatUser
@@ -156,7 +143,6 @@ export const ChatHistoryItem: React.FC<ChatHistoryItemProps> = ({ message, getRe
                     {isBot && <PromptDialog message={message} />}
                 </div>
                 {content}
-                {imageProvided && <img width="350px" height="250px" src={imageUrl} alt="alt" />}
                 {showShowRLHFMessage && <UserFeedbackActions messageIndex={messageIndex} />}
             </div>
             {features[FeatureKeys.RLHF].enabled && message.userFeedback === UserFeedback.Positive && (

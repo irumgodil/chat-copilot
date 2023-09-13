@@ -9,6 +9,8 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.AI.OpenAI;
+using Azure;
 using CopilotChat.WebApi.Extensions;
 using CopilotChat.WebApi.Hubs;
 using CopilotChat.WebApi.Models.Response;
@@ -25,6 +27,10 @@ using Microsoft.SemanticKernel.AI.TextCompletion;
 using Microsoft.SemanticKernel.Orchestration;
 using Microsoft.SemanticKernel.SkillDefinition;
 using Microsoft.SemanticKernel.TemplateEngine.Prompt;
+using ChatMessage = CopilotChat.WebApi.Models.Storage.ChatMessage;
+using Microsoft.Graph;
+using System.Drawing;
+using System.Runtime.CompilerServices;
 
 namespace CopilotChat.WebApi.Skills.ChatSkills;
 
@@ -452,7 +458,6 @@ public class ChatSkill
         // Stream the response to the client
         await this.UpdateBotResponseStatusOnClientAsync(chatId, "Generating bot response", cancellationToken);
         var chatMessage = await this.StreamResponseToClientAsync(chatId, userId, promptView, cancellationToken);
-
         // Extract semantic chat memory
         await this.UpdateBotResponseStatusOnClientAsync(chatId, "Generating semantic chat memory", cancellationToken);
         await SemanticChatMemoryExtractor.ExtractSemanticChatMemoryAsync(
@@ -752,6 +757,27 @@ public class ChatSkill
             chatMessage.Content += contentPiece;
             await this.UpdateMessageOnClient(chatMessage, cancellationToken);
         }
+
+        OpenAIClient client = new(new Uri("https://openai1234e.openai.azure.com/"), new AzureKeyCredential("6d78704dac3c45e1a8d73381ee33c7ac"));
+
+        if ((chatMessage.Content.Contains("uri", StringComparison.OrdinalIgnoreCase)
+            || chatMessage.Content.Contains("image", StringComparison.OrdinalIgnoreCase)
+            || chatMessage.Content.Contains("photo", StringComparison.OrdinalIgnoreCase)))
+        {
+            
+            Response<ImageGenerations> imageGenerations = await client.GetImageGenerationsAsync(
+                          new ImageGenerationOptions()
+                          {
+                              Prompt = chatMessage.Content,
+                              Size = ImageSize.Size256x256,
+                          });
+            Uri imageUri = imageGenerations.Value.Data[0].Url;
+
+            chatMessage.Content += imageUri.ToString();
+            await this.UpdateMessageOnClient(chatMessage, cancellationToken);
+        }
+        
+        
 
         return chatMessage;
     }
