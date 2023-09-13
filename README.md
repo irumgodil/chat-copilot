@@ -40,10 +40,10 @@ You will need the following items to run the sample:
 
    > NOTE: If you receive an error that the script is not digitally signed or cannot execute on the system, you may need to [change the execution policy](https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.3#change-the-execution-policy) (see list of [policies](https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.3#powershell-execution-policies) and [scopes](https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.3#execution-policy-scope)) or [unblock the script](https://learn.microsoft.com/powershell/module/microsoft.powershell.security/get-executionpolicy?view=powershell-7.3#example-4-unblock-a-script-to-run-it-without-changing-the-execution-policy).
 
-3. Configure Chat Copilot.
+3. Configure Chat Copilot (specific to this project):
 
    ```powershell
-   .\Configure.ps1 -AIService {AI_SERVICE} -APIKey {API_KEY} -Endpoint {AZURE_OPENAI_ENDPOINT}
+   .\Configure.ps1 -AIService AzureOpenAI -APIKey "{API_KEY}" -Endpoint "https://openai1234e.openai.azure.com/" -CompletionModel "Test" -EmbeddingModel "text-embedding-ada-002"
    ```
 
    - `AI_SERVICE`: `AzureOpenAI` or `OpenAI`.
