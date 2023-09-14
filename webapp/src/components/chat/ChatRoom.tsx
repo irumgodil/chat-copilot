@@ -108,25 +108,42 @@ export const ChatRoom: React.FC = () => {
         setShouldAutoScroll(true);
     };
 
-    let backgroundColor = tokens.colorNeutralBackground2;
-    if (messages.length > 0) {
-        const lastMessage = messages[messages.length - 1];
-        if (lastMessage.content.includes('happy')) {
-            backgroundColor = 'pink';
-            
-        } else if (lastMessage.content.includes('sad')) {
-            backgroundColor = 'blue';
-        } else if (lastMessage.content.includes('angry')) {
-            backgroundColor = 'yellow';
-        } else if (lastMessage.content.includes('surprised')) {
-            backgroundColor = 'green';
-        } else if (lastMessage.content.includes('disgusted')) {
-            backgroundColor = 'purple';
+    
+    let backgroundColor = tokens.colorNeutralBackground2; // Initialize with a default color
+    let emotionDetected = false; // Initialize the flag
+
+    for (let i = messages.length - 1; i >= 0; i--) {
+        const messageContent = messages[i].content.toLowerCase(); // Convert to lowercase for case-insensitive matching
+
+        if (/happy|happiness|joy/i.test(messageContent)) {
+            backgroundColor = 'lightyellow';  // Light Yellow for happiness
+            emotionDetected = true;
+            break; // Exit the loop as we found an emotion
+        } else if (/angry|anger/i.test(messageContent)) {
+            backgroundColor = '#DA8C79';     // Light Red for anger
+            emotionDetected = true;
+            break; // Exit the loop as we found an emotion
+        } else if (/sad|sadness/i.test(messageContent)) {
+            backgroundColor = 'lightblue';    // Light Blue for sadness
+            emotionDetected = true;
+            break; // Exit the loop as we found an emotion
+        } else if (/surprised|surprise/i.test(messageContent)) {
+            backgroundColor = '#EFAA5A';  // Light Orange for surprise
+            emotionDetected = true;
+            break; // Exit the loop as we found an emotion
+        } else if (/disgusted|disgust/i.test(messageContent)) {
+            backgroundColor = 'olive';        // Olive for disgust
+            emotionDetected = true;
+            break; // Exit the loop as we found an emotion
         }
     }
-
+    
     return (
-        <div className={classes.root} style={{ backgroundColor: backgroundColor }} onDragEnter={onDragEnter} onDragOver={onDragEnter} onDragLeave={onDragLeave}>
+        <div className={classes.root}
+            style={{
+            backgroundColor: emotionDetected ? backgroundColor : tokens.colorNeutralBackground2,
+            }}
+            onDragEnter={onDragEnter} onDragOver={onDragEnter} onDragLeave={onDragLeave}>
             <div ref={scrollViewTargetRef} className={classes.scroll}>
                 <div className={classes.history}>
                     <ChatHistory messages={messages} onGetResponse={handleSubmit} />
