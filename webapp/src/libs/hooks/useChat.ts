@@ -131,6 +131,18 @@ export const useChat = () => {
                     throw e;
                 });
 
+                // IRUMTODO: This should not be here - in tsx component
+
+                const synth = window.speechSynthesis;               
+                const u = new SpeechSynthesisUtterance(askResult.value as string); 
+                u.voice = synth.getVoices()[2];
+
+                u.pitch = 2;
+
+               
+
+                synth.speak(u)
+
             // Update token usage of current session
             const responseTokenUsage = askResult.variables.find((v) => v.key === 'tokenUsage')?.value;
             if (responseTokenUsage) dispatch(updateTokenUsage(JSON.parse(responseTokenUsage) as TokenUsage));

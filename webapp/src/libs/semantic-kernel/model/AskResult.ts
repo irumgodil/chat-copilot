@@ -4,6 +4,7 @@ import { IChatMessage } from '../../models/ChatMessage';
 
 export interface IAskResult {
     message: IChatMessage;
+    value: string;
     variables: ContextVariable[];
 }
 
