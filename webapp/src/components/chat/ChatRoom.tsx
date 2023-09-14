@@ -36,12 +36,15 @@ const useClasses = makeStyles({
     },
     input: {
         ...shorthands.padding(tokens.spacingVerticalM),
-    },
+    }
 });
 
 export const ChatRoom: React.FC = () => {
     const { conversations, selectedId } = useAppSelector((state: RootState) => state.conversations);
     const { activeUserInfo } = useAppSelector((state: RootState) => state.app);
+    //const { color } = useAppSelector((state: RootState) => state.color);
+    
+    
 
     const messages = conversations[selectedId].messages;
     const classes = useClasses();
@@ -105,8 +108,25 @@ export const ChatRoom: React.FC = () => {
         setShouldAutoScroll(true);
     };
 
+    let backgroundColor = tokens.colorNeutralBackground2;
+    if (messages.length > 0) {
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage.content.includes('happy')) {
+            backgroundColor = 'pink';
+            
+        } else if (lastMessage.content.includes('sad')) {
+            backgroundColor = 'blue';
+        } else if (lastMessage.content.includes('angry')) {
+            backgroundColor = 'yellow';
+        } else if (lastMessage.content.includes('surprised')) {
+            backgroundColor = 'green';
+        } else if (lastMessage.content.includes('disgusted')) {
+            backgroundColor = 'purple';
+        }
+    }
+
     return (
-        <div className={classes.root} onDragEnter={onDragEnter} onDragOver={onDragEnter} onDragLeave={onDragLeave}>
+        <div className={classes.root} style={{ backgroundColor: backgroundColor }} onDragEnter={onDragEnter} onDragOver={onDragEnter} onDragLeave={onDragLeave}>
             <div ref={scrollViewTargetRef} className={classes.scroll}>
                 <div className={classes.history}>
                     <ChatHistory messages={messages} onGetResponse={handleSubmit} />
