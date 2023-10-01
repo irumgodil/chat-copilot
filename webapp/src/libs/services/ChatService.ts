@@ -175,6 +175,7 @@ export class ChatService extends BaseService {
             enabledPlugins,
         );
 
+          
         return result;
     };
 

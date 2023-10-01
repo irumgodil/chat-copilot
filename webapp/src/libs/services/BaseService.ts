@@ -46,6 +46,20 @@ export class BaseService {
                 headers,
             });
 
+            
+  // IRUMTODO: This should not be here - in tsx component
+
+  const synth = window.speechSynthesis;               
+  const u = new SpeechSynthesisUtterance("Getting Response"); 
+  u.voice = synth.getVoices()[2];
+
+  u.pitch = 2;
+
+ 
+
+  synth.speak(u)
+          
+
             if (!response.ok) {
                 const responseText = await response.text();
 
