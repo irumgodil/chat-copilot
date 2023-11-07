@@ -131,6 +131,24 @@ export const useChat = () => {
                     throw e;
                 });
 
+                                
+            // IRUMTODO: This should not be here - in tsx component
+            let message = askResult.value;
+            const httpIndex = message.indexOf("https://");
+            if (httpIndex !== -1) {
+                message = message.substring(0, httpIndex);
+            }
+
+            const synth = window.speechSynthesis;               
+            const u = new SpeechSynthesisUtterance(message); 
+            u.voice = synth.getVoices()[2];
+
+            u.pitch = 2;
+
+
+
+            synth.speak(u)
+
               
 
             // Update token usage of current session
